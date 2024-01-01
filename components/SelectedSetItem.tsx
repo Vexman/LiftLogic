@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 
 const SetItem = ({
+  routineName,
   set,
   currentExercise,
   setIndex,
@@ -18,16 +19,16 @@ const SetItem = ({
   currentSetIndex,
   setCurrentSetIndex,
   formattedDate,
-  setRoutine,
   setCurrentExerciseIndex,
   workout,
 }) => {
   const { sets } = currentExercise;
-  const { weight, reps } = set;
+  const { weight, reps, actualReps, actualWeight, name } = set;
+  const [setName, setSetName] = useState(name);
   const [currentSetWeight, setCurrentSetWeight] = useState(
-    roundToNearestFive(weight)
+    actualWeight || roundToNearestFive(weight).toString()
   );
-  const [currentSetReps, setCurrentSetReps] = useState(reps);
+  const [currentSetReps, setCurrentSetReps] = useState(actualReps || reps);
   const repsInputRef = useRef(null);
   const weightInputRef = useRef(null);
   const { data: session } = useSession() as {
@@ -43,6 +44,7 @@ const SetItem = ({
     set.actualWeight = currentSetWeight;
     set.actualReps = currentSetReps;
     set.complete = true;
+    set.name = setName;
 
     currentExercise.sets = [
       ...sets.slice(0, setIndex),
@@ -55,6 +57,7 @@ const SetItem = ({
     if (currentExercise.complete) {
       currentExercise.date = formattedDate;
       currentExercise.userId = session?.token.user._id;
+      currentExercise.routineName = routineName;
       saveExercise(currentExercise);
       nextIndex = currentExerciseIndex + 1;
       let nextSetIndex = 0;
@@ -77,9 +80,6 @@ const SetItem = ({
         setCurrentSetIndex(nextSetIndex);
       }
     }
-    setRoutine((prevRoutine) => ({
-      ...prevRoutine,
-    }));
   };
   useEffect(() => {
     if (sets[currentSetIndex] !== "" && !sets[currentExercise]) {
@@ -101,7 +101,13 @@ const SetItem = ({
         className="card border small"
       >
         <div className="fw-bold d-flex justify-content-evenly">
-          <div className="m-1">{set.name}</div>
+          <input
+            className="m-2 form-control form-control-sm"
+            value={setName}
+            onChange={(e) => {
+              setSetName(e.target.value);
+            }}
+          />
           <Button
             type="button"
             disabled={!currentSetWeight || !currentSetReps}
@@ -128,10 +134,12 @@ const SetItem = ({
                 ref={weightInputRef}
                 type="number"
                 className="form-control form-control-sm"
-                value={currentSetWeight || weight}
+                value={currentSetWeight}
                 onChange={(e) => {
                   const newValue = parseFloat(e.target.value);
-                  setCurrentSetWeight(isNaN(newValue) ? 0 : newValue);
+                  setCurrentSetWeight(
+                    isNaN(newValue) ? "" : newValue.toString()
+                  );
                 }}
                 onFocus={() => {
                   setCurrentSetIndex(setIndex);
@@ -143,7 +151,7 @@ const SetItem = ({
                 ref={repsInputRef}
                 type="number"
                 className="form-control form-control-sm"
-                value={currentSetReps || reps}
+                value={currentSetReps}
                 onChange={(e) => {
                   setCurrentSetReps(e.target.value);
                 }}
