@@ -15,6 +15,7 @@ const SetItem = ({
   currentExercise,
   setIndex,
   currentExerciseIndex,
+  currentSetIndex,
   setCurrentSetIndex,
   formattedDate,
   setRoutine,
@@ -80,6 +81,11 @@ const SetItem = ({
       ...prevRoutine,
     }));
   };
+  useEffect(() => {
+    if (sets[currentSetIndex] !== "" && !sets[currentExercise]) {
+      setCurrentSetWeight();
+    }
+  }, [currentSetWeight,currentSetReps,currentSetIndex]);
   return (
     <div
       key={setIndex}

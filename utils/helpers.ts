@@ -115,12 +115,12 @@ const getShortenedDays = (currentDate) => {
 export const calculateWeights = (totalWeight) => {
   const barbellWeight = 45;
   const availableWeights = {
-    "45": 6,
-    "35": 2,
-    "25": 2,
-    "10": 4,
-    "5": 2,
-    "2.5": 2,
+    "45 lbs.": 6,
+    "35 lbs.": 2,
+    "25 lbs.": 2,
+    "10 lbs.": 4,
+    "5 lbs.": 2,
+    "2.5 lbs.": 2,
   };
 
   let remainingWeight = (totalWeight - barbellWeight) / 2; // Divide by 2 for each side
@@ -138,7 +138,7 @@ export const calculateWeights = (totalWeight) => {
     );
 
     if (count > 0) {
-      requiredWeights.push(`${count} ${weight}${count > 1 ? "s" : ""}`);
+      requiredWeights.push(`${count}x ${weight}${count > 1 ? "s" : ""}`);
       remainingWeight -= count * plateWeight;
     }
   }
