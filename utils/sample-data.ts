@@ -1,33 +1,12 @@
-export const intitialRoutines = [
+export const initialWorkouts = [
   {
+    id: 1,
     name: "Primary",
-    description: "Click to view workout",
-    days: {
-      sunday: {
-        title: "",
-        complete: false,
-        exercises: [],
-      },
-      monday: { title: "", complete: false, exercises: [] },
-      tuesday: {
-        title: "",
-        complete: false,
-        exercises: [],
-      },
-      wednesday: { title: "", complete: false, exercises: [] },
-      thursday: {
-        title: "",
-        complete: false,
-        exercises: [],
-      },
-      friday: { title: "", complete: false, exercises: [] },
-      saturday: { title: "", complete: false, exercises: [] },
-    },
   },
 ];
 
 export const routines = {
-  Primary: {
+  "1": {
     sunday: {
       title: "Mobility and Active Recovery",
       exercises: [
