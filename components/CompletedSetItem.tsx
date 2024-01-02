@@ -7,12 +7,12 @@ const SetItem = ({ set, setIndex, setCurrentSetIndex }) => {
   return (
     <div
       key={v4()}
-      onClick={() => setCurrentSetIndex(setIndex)}
-      className="card bg-light text-success small"
+      onClick={handleClickCompletedSet}
+      className="card bg-light text-success medium my-2 py-2 px-3"
     >
-      <div>{set.name}</div>
-      <div className="row small">
-        <div className="col small">{actualWeight} lbs.</div>
+      <div className="d-flex row small">
+        <div className="col">{actualWeight} lbs.</div>
+        <div className="col medium">{set.name}&nbsp;<FaCheckCircle /></div>
         <div className="col small">{actualReps} reps</div>
       </div>
     </div>

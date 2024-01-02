@@ -89,69 +89,67 @@ const SetItem = ({
   return (
     <div
       key={setIndex}
-      style={{ transition: "margin .2s ease" }}
-      className="my-2"
+      style={{ 
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+        transition: "box-shadow 2s ease",
+        overflow: "visible"
+      }}
+      className="card border small p-3 my-2"
     >
-      <div
-        style={{
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
-          transition: "box-shadow 2s ease",
-          overflow: "visible",
-        }}
-        className="card border small"
-      >
-        <div className="fw-bold d-flex justify-content-evenly">
-          <div className="m-1">{set.name}</div>
+        <div className="input-group mb-2">
+          <input
+            className="form-control"
+            value={setName}
+            onChange={(e) => {
+              setSetName(e.target.value);
+            }}
+          />
           <Button
             type="button"
             disabled={!currentSetWeight || !currentSetReps}
-            size="sm"
-            variant="success m-1"
+            variant="success"
             onClick={handleLogSet}
           >
-            Log Set
+            Log&nbsp;Set
           </Button>
         </div>
-        <div className="container p-1 fw-bold">
-          <div className="row small">
-            <div className="col small">
-              <div className="text-secondary">
-                {calculateWeights(roundToNearestFive(set.weight))}
-              </div>{" "}
-              {roundToNearestFive(weight)} lbs.
-            </div>
-            <div className="col small">{reps} reps</div>
+        <div className="fw-bold">
+          <div className="col mb-2">
+            {calculateWeights(roundToNearestFive(set.weight))}
           </div>
-          <div className="row small">
-            <div className="col small">
-              <input
-                ref={weightInputRef}
-                type="number"
-                className="form-control form-control-sm"
-                value={currentSetWeight || weight}
-                onChange={(e) => {
-                  const newValue = parseFloat(e.target.value);
-                  setCurrentSetWeight(isNaN(newValue) ? 0 : newValue);
-                }}
-                onFocus={() => {
-                  setCurrentSetIndex(setIndex);
-                }}
+          <div className="row">
+          <div className="col input-group input-group-sm"> 
+            <span className="input-group-text">{roundToNearestFive(weight)} lbs.</span>
+            <input
+              ref={weightInputRef}
+              type="number"
+              className="form-control form-control-sm"
+              value={currentSetWeight}
+              onChange={(e) => {
+                const newValue = parseFloat(e.target.value);
+                setCurrentSetWeight(
+                  isNaN(newValue) ? "" : newValue.toString()
+                );
+              }}
+              onFocus={() => {
+                setCurrentSetIndex(setIndex);
+              }}
               />
-            </div>
-            <div className="col small">
-              <input
-                ref={repsInputRef}
-                type="number"
-                className="form-control form-control-sm"
-                value={currentSetReps || reps}
-                onChange={(e) => {
-                  setCurrentSetReps(e.target.value);
-                }}
-                onFocus={() => {
-                  setCurrentSetIndex(setIndex);
-                }}
-              />
-            </div>
+          </div>
+          <div className="col input-group input-group-sm">
+            <span className="input-group-text">{reps} reps</span>
+            <input
+              ref={repsInputRef}
+              type="number"
+              className="form-control form-control-sm"
+              value={currentSetReps}
+              onChange={(e) => {
+                setCurrentSetReps(e.target.value);
+              }}
+              onFocus={() => {
+                setCurrentSetIndex(setIndex);
+              }}
+            />
           </div>
         </div>
       </div>
